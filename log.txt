@@ -1,0 +1,36 @@
+2019/01/01 23:07:02 login_required
+2019/01/01 23:07:02 load []
+2019/01/01 23:07:02 models in all []
+2019/01/01 23:07:02 游客用户
+2019/01/01 23:07:02 load []
+2019/01/01 23:07:02 models in all []
+2019/01/01 23:08:40 all url Map([<Rule '/api/weibo/comment/delete' (HEAD, OPTIONS, GET) -> api_weibo.comment_delete>,
+ <Rule '/api/weibo/comment/update' (POST, OPTIONS) -> api_weibo.comment_update>,
+ <Rule '/user/register/view' (HEAD, OPTIONS, GET) -> routes_user.register_view>,
+ <Rule '/user/login/view' (HEAD, OPTIONS, GET) -> routes_user.login_view>,
+ <Rule '/api/weibo/comment' (POST, OPTIONS) -> api_weibo.comment_add>,
+ <Rule '/api/weibo/delete' (HEAD, OPTIONS, GET) -> api_weibo.delete>,
+ <Rule '/api/weibo/update' (POST, OPTIONS) -> api_weibo.update>,
+ <Rule '/api/weibo/all' (HEAD, OPTIONS, GET) -> api_weibo.all>,
+ <Rule '/api/weibo/add' (POST, OPTIONS) -> api_weibo.add>,
+ <Rule '/weibo/index' (HEAD, OPTIONS, GET) -> routes_weibo.index>,
+ <Rule '/user/register' (POST, OPTIONS) -> routes_user.register>,
+ <Rule '/user/login' (POST, OPTIONS) -> routes_user.login>,
+ <Rule '/' (HEAD, OPTIONS, GET) -> public.index>,
+ <Rule '/static/<filename>' (HEAD, OPTIONS, GET) -> static>])
+2019/01/01 23:08:45 all url Map([<Rule '/api/weibo/comment/delete' (OPTIONS, HEAD, GET) -> api_weibo.comment_delete>,
+ <Rule '/api/weibo/comment/update' (POST, OPTIONS) -> api_weibo.comment_update>,
+ <Rule '/user/register/view' (OPTIONS, HEAD, GET) -> routes_user.register_view>,
+ <Rule '/user/login/view' (OPTIONS, HEAD, GET) -> routes_user.login_view>,
+ <Rule '/api/weibo/comment' (POST, OPTIONS) -> api_weibo.comment_add>,
+ <Rule '/api/weibo/delete' (OPTIONS, HEAD, GET) -> api_weibo.delete>,
+ <Rule '/api/weibo/update' (POST, OPTIONS) -> api_weibo.update>,
+ <Rule '/api/weibo/all' (OPTIONS, HEAD, GET) -> api_weibo.all>,
+ <Rule '/api/weibo/add' (POST, OPTIONS) -> api_weibo.add>,
+ <Rule '/weibo/index' (OPTIONS, HEAD, GET) -> routes_weibo.index>,
+ <Rule '/user/register' (POST, OPTIONS) -> routes_user.register>,
+ <Rule '/user/login' (POST, OPTIONS) -> routes_user.login>,
+ <Rule '/' (OPTIONS, HEAD, GET) -> public.index>,
+ <Rule '/static/<filename>' (OPTIONS, HEAD, GET) -> static>])
+2019/01/01 23:08:50 load []
+2019/01/01 23:08:50 models in all []

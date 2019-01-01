@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    {#    <script src='/static/redirect.js'></script>#}
+</head>
+<body>
+<h1>注册</h1>
+<form action="/user/register" method="post">
+    <input type="text" name="username" placeholder="请输入用户名">
+    <br>
+    <input type="text" name="password" placeholder="请输入密码">
+    <br>
+    <button type="submit">注册</button>
+</form>
+<h3 id="result">{{ result }}</h3>
+<p id="content" style="text-indent: 2em; margin-top: 30px; display: none">
+    系统将在 <span id="time">3</span> 秒钟后自动跳转至登录页面，如果未能跳转，
+    <a href="/user/login/view" title="点击访问">请点击</a>。
+</p>
+<script>
+    var e = function (selector, parent = document) {
+        return parent.querySelector(selector)
+    }
+    var delayUrl = function () {
+        var delay = e('#time').innerHTML;
+        var t = setTimeout("delayUrl()", 600);
+        if (delay > 0) {
+            delay--;
+            e("#time").innerHTML = delay;
+        } else {
+            clearTimeout(t);
+            window.location.href = "/user/login/view";
+        }
+    }
+    var redirct = function () {
+        var result = e('#result').innerHTML
+        console.log('result', result)
+        if (result == '注册成功') {
+            a = e('#content')
+            a.style.display = 'inline'
+            delayUrl()
+        }
+    }
+    var __main = function () {
+        redirct()
+    }
+
+    __main()
+</script>
+</body>
+</html>
