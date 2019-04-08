@@ -10,7 +10,6 @@ from utils import log
 
 
 def save(data, path):
-    # 把一个 dict 或者 list 写入文件
     s = json.dumps(data, indent=2, ensure_ascii=False, cls=NikuEncoder)
     with open(path, 'w+', encoding='utf-8') as f:
         log('save', path, s, data)
@@ -18,7 +17,6 @@ def save(data, path):
 
 
 def load(path):
-    # 从一个文件中载入数据并转化为 dict 或者 list
     with open(path, 'r', encoding='utf-8') as f:
         s = f.read()
         log('load', s)
@@ -26,7 +24,6 @@ def load(path):
 
 
 class Model(object):
-    # 所有 model 的基类
     def __init__(self, form):
         self.id = form.get('id', None)
 
@@ -77,7 +74,6 @@ class Model(object):
 
     @classmethod
     def find_by(cls, **kwargs):
-
         for m in cls.all():
             exist = True
             for k, v in kwargs.items():
@@ -89,7 +85,6 @@ class Model(object):
     @classmethod
     def find_all(cls, **kwargs):
         models = []
-
         for m in cls.all():
             exist = True
             for k, v in kwargs.items():
@@ -105,7 +100,6 @@ class Model(object):
         log('models', models)
 
         if self.id is None:
-            # 加上 id
             if len(models) > 0:
                 log('不是第一个元素', models[-1].id)
                 self.id = models[-1].id + 1
@@ -129,9 +123,6 @@ class Model(object):
         return '< {}\n{} >\n'.format(classname, s)
 
     def json(self):
-        """
-        返回当前 model 的字典表示
-        """
         d = self.__dict__
         return d
 

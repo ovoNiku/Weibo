@@ -5,10 +5,6 @@ import hashlib
 
 
 class User(Model):
-    """
-    User 是一个保存用户数据的 model
-    """
-
     def __init__(self, form):
         super().__init__(form)
         self.username = form.get('username', '')
