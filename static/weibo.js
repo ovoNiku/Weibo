@@ -1,4 +1,4 @@
-// 获取所有 weibo
+
 var apiWeiboAll = function(callback) {
     var path = '/api/weibo/all'
     ajax('GET', path, '', callback)
@@ -108,7 +108,6 @@ var commmentUpdateTemplate = function(content) {
 
 var insertWeibo = function(weibo) {
     var weiboCell = weiboTemplate(weibo)
-    // 插入 weibo-list
     var weiboList = e('#id-weibo-list')
     weiboList.insertAdjacentHTML('beforeend', weiboCell)
 }
@@ -130,24 +129,18 @@ var insertCommentUpdateForm = function(content, commentCell) {
 }
 
 var loadWeibos = function() {
-    // 调用 ajax api 来载入数据
-    // todos = api_todo_all()
-    // process_todos(todos)
     apiWeiboAll(function(forms) {
         log('load all weibos', forms)
-        // 循环添加到页面中
         for(var i = 0; i < forms.length; i++) {
             var weibo = forms[i]
             var comments = weibo['comment']
             insertWeibo(weibo)
         }
     })
-    // second call
 }
 
 var bindEventWeiboAdd = function() {
     var b = e('#id-button-add')
-    // 注意, 第二个参数可以直接给出定义函数
     b.addEventListener('click', function(){
         var input = e('#id-input-weibo')
         var content = input.value
@@ -156,7 +149,6 @@ var bindEventWeiboAdd = function() {
             content: content,
         }
         apiWeiboAdd(form, function(weibo) {
-            // 收到返回的数据, 插入到页面中
             insertWeibo(weibo)
         })
     })
@@ -173,7 +165,6 @@ var bindEventWeiboDelete = function() {
         var weiboId = self.parentElement.dataset['id']
         apiWeiboDelete(weiboId, function(r) {
             log('apiWeiboDelete', r.message)
-            // 删除 self 的父节点
             alert(r.message)
             if (r.message.indexOf("成功删除 weibo") != -1) {
                 self.parentElement.remove()
@@ -188,15 +179,10 @@ var bindEventWeiboDelete = function() {
 
 var bindEventWeiboEdit = function() {
     var weiboList = e('#id-weibo-list')
-    // 事件响应函数会传入一个参数 就是事件本身
     weiboList.addEventListener('click', function(event) {
     log(event)
-    // 我们可以通过 event.target 来得到被点击的对象
     var self = event.target
     log('被点击的元素', self)
-    // 通过比较被点击元素的 class
-    // 来判断元素是否是我们想要的
-    // classList 属性保存了元素所有的 class
     log(self.classList)
     if (self.classList.contains('weibo-edit')) {
         log('点到了编辑按钮')
@@ -206,7 +192,6 @@ var bindEventWeiboEdit = function() {
         var insertSpan = e('.weibo-comment', weiboCell)
         var content = weiboSpan.innerText
         log('weibo edit', weiboId, content)
-        // 插入编辑输入框
         insertUpdateForm(content, insertSpan)
     } else {
         log('点到了 weibo cell')
@@ -215,7 +200,6 @@ var bindEventWeiboEdit = function() {
 
 var bindEventWeiboUpdate = function() {
     var weiboList = e('#id-weibo-list')
-    // 事件响应函数会传入一个参数 就是事件本身
     weiboList.addEventListener('click', function(event) {
     log(event)
     var self = event.target
@@ -234,7 +218,6 @@ var bindEventWeiboUpdate = function() {
         }
         apiWeiboUpdate(form, function(weibo) {
             log('apiWeiboUpdate', weibo)
-            //判断是否执行
             if (weibo.hasOwnProperty('message')) {
                 log('没有权限')
                 bindEventUser()
@@ -288,8 +271,6 @@ var bindEventCommentDelete = function() {
         log('parentElement id', self.parentElement, commentId)
         apiCommentDelete(commentId, function(r) {
             log('apiCommentDelete', r.message)
-            // 删除 self 的父节点
-            // self.parentElement.remove()
             alert(r.message)
             if (r.message.indexOf("成功删除 comment") != -1) {
                 self.parentElement.remove()
@@ -304,15 +285,10 @@ var bindEventCommentDelete = function() {
 
 var bindEventCommentEdit = function() {
     var weiboList = e('#id-weibo-list')
-    // 事件响应函数会传入一个参数 就是事件本身
     weiboList.addEventListener('click', function(event) {
     log(event)
-    // 我们可以通过 event.target 来得到被点击的对象
     var self = event.target
     log('被点击的元素', self)
-    // 通过比较被点击元素的 class
-    // 来判断元素是否是我们想要的
-    // classList 属性保存了元素所有的 class
     log(self.classList)
     if (self.classList.contains('comment-edit')) {
         log('点到了编辑按钮')
@@ -322,7 +298,6 @@ var bindEventCommentEdit = function() {
         var commentSpan = e('.weibo-comment-span', commentCell)
         var content = commentSpan.innerText
         log('comment edit', commentId, content)
-        // 插入编辑输入框
         insertCommentUpdateForm(content, commentCell)
     } else {
         log('点到了 weibo cell')
@@ -331,7 +306,6 @@ var bindEventCommentEdit = function() {
 
 var bindEventCommentUpdate = function() {
     var weiboList = e('#id-weibo-list')
-    // 事件响应函数会传入一个参数 就是事件本身
     weiboList.addEventListener('click', function(event) {
     log(event)
     var self = event.target
