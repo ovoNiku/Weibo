@@ -27,9 +27,6 @@ bp = Blueprint('routes_user', __name__)
 
 @bp.route('/user/login', methods=['POST'])
 def login():
-    """
-    登录页面的路由函数
-    """
     form = request.form
 
     u, result = User.login(form)
