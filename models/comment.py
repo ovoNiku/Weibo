@@ -1,8 +1,10 @@
 from models import Model
 from models.user import User
+# from models.weibo import Weibo
 
 
 class Comment(Model):
+
     def __init__(self, form, user_id=-1):
         super().__init__(form)
         self.content = form.get('content', '')

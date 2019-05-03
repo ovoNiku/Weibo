@@ -24,6 +24,7 @@ def load(path):
 
 
 class Model(object):
+
     def __init__(self, form):
         self.id = form.get('id', None)
 
@@ -52,6 +53,17 @@ class Model(object):
         save(l, path)
 
     @classmethod
+    def delete_comment(cls, id):
+        ms = cls.all()
+        for i, m in enumerate(ms):
+            if m.weibo_id == id:
+                del ms[i]
+
+        l = [m.__dict__ for m in ms]
+        path = cls.db_path()
+        save(l, path)
+
+    @classmethod
     def update(cls, id, **kwargs):
         m = cls.find_by(id=id)
 
@@ -66,14 +78,15 @@ class Model(object):
 
     @classmethod
     def all(cls):
+
         path = cls.db_path()
         models = load(path)
-        log('models in all', models)
         ms = [cls(m) for m in models]
         return ms
 
     @classmethod
     def find_by(cls, **kwargs):
+
         for m in cls.all():
             exist = True
             for k, v in kwargs.items():
@@ -85,6 +98,7 @@ class Model(object):
     @classmethod
     def find_all(cls, **kwargs):
         models = []
+
         for m in cls.all():
             exist = True
             for k, v in kwargs.items():
@@ -97,14 +111,11 @@ class Model(object):
 
     def save(self):
         models = self.all()
-        log('models', models)
 
         if self.id is None:
             if len(models) > 0:
-                log('不是第一个元素', models[-1].id)
                 self.id = models[-1].id + 1
             else:
-                log('第一个元素')
                 self.id = 0
             models.append(self)
         else:

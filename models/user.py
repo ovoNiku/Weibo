@@ -5,6 +5,7 @@ import hashlib
 
 
 class User(Model):
+
     def __init__(self, form):
         super().__init__(form)
         self.username = form.get('username', '')
@@ -29,6 +30,7 @@ class User(Model):
         salted = password + salt
         hash = hashlib.sha256(salted.encode('ascii')).hexdigest()
         return hash
+
 
     @classmethod
     def login(cls, form):
