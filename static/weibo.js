@@ -141,6 +141,7 @@ var loadWeibos = function() {
 
 var bindEventWeiboAdd = function() {
     var b = e('#id-button-add')
+    log('click!', b)
     b.addEventListener('click', function(){
         var input = e('#id-input-weibo')
         var content = input.value
