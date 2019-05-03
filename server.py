@@ -1,23 +1,50 @@
+import socket
+import _thread
+
+from request import Request
 from utils import log
 
-from flask import Flask
-from routes.routes_public import bp as public
-from routes.routes_user import bp as routes_user
-from routes.api_weibo import bp as api_weibo
-from routes.routes_weibo import bp as routes_weibo
+from routes import error
 
-app = Flask(__name__)
-app.register_blueprint(public)
-app.register_blueprint(routes_user)
-app.register_blueprint(routes_weibo)
-app.register_blueprint(api_weibo)
+from routes.routes_weibo import route_dict as weibo_routes
+from routes.routes_user import route_dict as user_routes
+from routes.routes_public import route_dict as public_routes
+from routes.api_weibo import route_dict as weibo_api
+
+
+def response_for_path(request):
+    r = {}
+
+    r.update(weibo_api())
+    r.update(weibo_routes())
+    r.update(user_routes())
+    r.update(public_routes())
+    response = r.get(request.path, error)
+    return response(request)
+
+
+def process_request(connection):
+    with connection:
+        r = connection.recv(1024)
+        r = r.decode()
+        request = Request(r)
+        response = response_for_path(request)
+        connection.sendall(response)
+
+
+def run(host, port):
+    log('开始运行于', 'http://{}:{}'.format(host, port))
+    with socket.socket() as s:
+        s.bind((host, port))
+        s.listen()
+        while True:
+            connection, address = s.accept()
+            _thread.start_new_thread(process_request, (connection,))
+
 
 if __name__ == '__main__':
-    # 生成配置并且运行程序
     config = dict(
-        debug=True,
-        host='localhost',
+        host='127.0.0.1',
         port=3000,
     )
-    log('all url', app.url_map)
-    app.run(**config)
+    run(**config)
