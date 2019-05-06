@@ -9,11 +9,16 @@ from models.session import Session
 def all(request):
     weibos = Weibo.all_json()
     for weibo in weibos:
+        log('weibo', weibo, type(weibo))
         id = weibo['id']
         user_id = weibo['user_id']
-        cs = Comment.find_all(weibo_id=id)
-        user = User.find_by(id=user_id)
+        user = User.one(id=user_id)
         username = user.username
+        cs = Comment.all(weibo_id=id)
+        for c in cs:
+            c_user = User.one(id=c.user_id)
+            c = c.__dict__
+            c['username'] = c_user.username
         weibo['comment'] = cs
         weibo['username'] = username
     return json_response(weibos)
@@ -22,14 +27,15 @@ def all(request):
 def add(request):
     form = request.json()
     u = current_user(request)
-    w = Weibo.add(form, u.id)
-    return json_response(w.json())
+    w = Weibo.add(form, u.id).__dict__
+    w['username'] = u.username
+    return json_response(w)
 
 
 def delete(request):
     weibo_id = int(request.query['id'])
     Weibo.delete(weibo_id)
-    cs = Comment.find_all(weibo_id=weibo_id)
+    cs = Comment.all(weibo_id=weibo_id)
     for c in cs:
         id = c.id
         Comment.delete(id)
@@ -43,6 +49,7 @@ def delete(request):
 def update(request):
     form = request.json()
     weibo_id = int(form['id'])
+    print('weibo_id', weibo_id)
     content = form['content']
     w = Weibo.update(weibo_id, content=content)
     return json_response(w.json())
@@ -51,8 +58,9 @@ def update(request):
 def comment_add(request):
     form = request.json()
     u = current_user(request)
-    c = Comment.add(form, u.id)
-    return json_response(c.json())
+    c = Comment.add(form, u.id).__dict__
+    c['username'] = u.username
+    return json_response(c)
 
 
 def comment_delete(request):
@@ -85,11 +93,11 @@ def weibo_owner_required(route_function):
         u = current_user(request)
         if 'id' in request.query:
             weibo_id = int(request.query['id'])
-            weibo = Weibo.find_by(id=weibo_id)
+            weibo = Weibo.one(id=weibo_id)
         else:
             form = request.json()
             weibo_id = int(form['id'])
-            weibo = Weibo.find_by(id=weibo_id)
+            weibo = Weibo.one(id=weibo_id)
 
         if weibo.user_id == u.id:
             log('pass 权限够')
@@ -106,15 +114,15 @@ def comment_owner_required(route_function):
         u = current_user(request)
         if 'id' in request.query:
             comment_id = int(request.query['id'])
-            comment = Comment.find_by(id=comment_id)
+            comment = Comment.one(id=comment_id)
             weibo_id = comment.weibo_id
-            weibo = Weibo.find_by(id=weibo_id)
+            weibo = Weibo.one(id=weibo_id)
         else:
             form = request.json()
             comment_id = int(form['id'])
-            comment = Comment.find_by(id=comment_id)
+            comment = Comment.one(id=comment_id)
             weibo_id = comment.weibo_id
-            weibo = Weibo.find_by(id=weibo_id)
+            weibo = Weibo.one(id=weibo_id)
 
         if comment.user_id == u.id:
             log('pass 权限够')
