@@ -1,6 +1,6 @@
 import socket
 import _thread
-
+from models.base_model import SQLModel
 from request import Request
 from utils import log
 
@@ -33,7 +33,10 @@ def process_request(connection):
 
 
 def run(host, port):
-    log('开始运行于', 'http://{}:{}'.format(host, port))
+    SQLModel.init_db()
+    log('数据库链接初始化 <{}>'.format(SQLModel.connection.host_info))
+    log('开始运行于 http://{}:{}'.format(host, port))
+
     with socket.socket() as s:
         s.bind((host, port))
         s.listen()
