@@ -60,8 +60,8 @@ var weiboTemplate = function(weibo) {
         <div class="weibo-cell" data-id="${weibo.id}">
             <br>
             <span class="weibo-content">${weibo.username}：${weibo.content}</span>
-            <button class="weibo-edit">编辑</button>
             <button class="weibo-delete">删除</button>
+            <button class="weibo-edit">编辑</button>
             <br>
             <input class="weibo-comment-input">
             <button class="weibo-comment">添加评论</button>
