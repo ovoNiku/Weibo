@@ -2,7 +2,6 @@ import urllib.parse
 from utils import log
 import json
 
-
 class Request(object):
     def __init__(self, raw_data):
         header, self.body = raw_data.split('\r\n\r\n', 1)
@@ -14,12 +13,12 @@ class Request(object):
         self.path = ""
         self.query = {}
         self.parse_path(path)
-        log('Request: path 和 query', self.path, self.query)
+        log('HTTP 请求 path 和 query', self.path, self.query)
 
         self.headers = {}
         self.cookies = {}
         self.add_headers(h[1:])
-        log('Request: headers 和 cookies', self.headers, self.cookies)
+        log('HTTP 请求 headers 和 cookies', self.headers, self.cookies)
 
     def add_headers(self, header):
         lines = header
@@ -34,14 +33,19 @@ class Request(object):
 
     def form(self):
         body = urllib.parse.unquote_plus(self.body)
+        log('form', self.body)
+        log('form', body)
         args = body.split('&')
         f = {}
+        log('args', args)
         for arg in args:
             k, v = arg.split('=')
             f[k] = v
+        log('form() 字典', f)
         return f
 
     def parse_path(self, path):
+
         index = path.find('?')
         if index == -1:
             self.path = path
@@ -55,6 +59,7 @@ class Request(object):
                 query[k] = v
             self.path = path
             self.query = query
+
 
     def json(self):
         return json.loads(self.body)
