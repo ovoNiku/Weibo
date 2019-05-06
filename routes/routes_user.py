@@ -1,5 +1,4 @@
 from urllib.parse import unquote_plus
-import time
 from models.session import Session
 from routes import (
     NikuTemplate,
